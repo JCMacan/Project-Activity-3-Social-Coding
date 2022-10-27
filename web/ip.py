@@ -18,7 +18,7 @@ json_data = requests.get(url).json()
 json_data = pd.DataFrame([json_data])
 
 #Drop the unnecessary columns
-json_data.drop(columns=['in_eu', 'languages','country_code','country_code_iso3','country','region',
+json_data.drop(columns=['in_eu', 'languages','country_code','country_code_iso3','region',
                         'country_capital','country_tld','continent_code','country_population',
                         'country_calling_code','region_code'],inplace=True)
 
@@ -26,7 +26,7 @@ json_data.drop(columns=['in_eu', 'languages','country_code','country_code_iso3',
 json_data.rename(columns={'ip':'IP','network':'Network','version':'Version','city':'City',
     'region':'Region','country_name':'Country','latitude':'Latitude','longitude':'Longitude',
     'timezone':'Timezone','utc_offset':'UTC Offset','currency':'Currency','currency_name':'Currency Name',
-    'country_area':'Country Area','asn':'ASN','org':'ISP'}, inplace=True)
+    'country_area':'Country Area','asn':'ASN','org':'ISP','country':'Country Code','postal':'Postal'}, inplace=True)
 
 #Reshape the dataframe to make it a long table
 json_data = json_data.melt()
