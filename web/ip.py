@@ -13,11 +13,28 @@ main_api = "https://ipapi.co/"
 url = main_api + ip + "/json"
 
 json_data = requests.get(url).json()
+
+#Put the information in a dataframe
 json_data = pd.DataFrame([json_data])
-json_data.drop(columns=['in_eu', 'languages','country_code','country_code_iso3'],inplace=True)
+
+#Drop the unnecessary columns
+json_data.drop(columns=['in_eu', 'languages','country_code','country_code_iso3','country','region',
+                        'country_capital','country_tld','continent_code','country_population',
+                        'country_calling_code','region_code'],inplace=True)
+
+#Rename the columns for a better readable format
+json_data.rename(columns={'ip':'IP','network':'Network','version':'Version','city':'City',
+    'region':'Region','country_name':'Country','latitude':'Latitude','longitude':'Longitude',
+    'timezone':'Timezone','utc_offset':'UTC Offset','currency':'Currency','currency_name':'Currency Name',
+    'country_area':'Country Area','asn':'ASN','org':'ISP'}, inplace=True)
+
+#Reshape the dataframe to make it a long table
 json_data = json_data.melt()
+
+#Rename the new columns
 json_data.rename(columns={'variable': 'Information', 'value': 'Value'}, inplace=True)
-json_data.info()
+
+@app.route('/')
 def man():
     return render_template('index.html', tables=[json_data.to_html(index=False)], titles=['Information','Value'])
 
